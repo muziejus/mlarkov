@@ -7,12 +7,14 @@ This is not production ready, though I'd like to abstract out some of it to a ge
 
 It looks for a file called "configs.yml" which should look like this:
 
-  ---
-  :since_id: {some Twitter id}
-  :consumer_key: {Gibberish from Twitter}
-  :consumer_secret: {Gibberish from Twitter}
-  :access_token: {Gibberish from Twitter}
-  :access_token_secret: {Gibberish from Twitter}
+```
+---
+:since_id: {some Twitter id}
+:consumer_key: {Gibberish from Twitter}
+:consumer_secret: {Gibberish from Twitter}
+:access_token: {Gibberish from Twitter}
+:access_token_secret: {Gibberish from Twitter}
+```
 
 Mine is obviously in my .gitignore. 
 
@@ -24,4 +26,6 @@ After the KarlMarxovChain class definition, you can see the commands I use to sp
 
 Finally, I summon this via a cron command that looks like this:
 
-  0 2 * * * cd $BOT_HOME/karlmarxovchain ; /complex/rvm/path/to/ruby KarlMarxovChain.rb >> cron.log 2>&1 
+```
+0 2 * * * cd $BOT_HOME/karlmarxovchain ; /complex/rvm/path/to/ruby KarlMarxovChain.rb >> cron.log 2>&1 
+```
