@@ -6,6 +6,9 @@ RSpec.describe KarlMarxovChain do
 
   describe '#initialize' do
     context "when configs.yml is available" do
+      it "finds configs.yml" do
+        expect(File.exists?("configs.yml")).to eq(true)
+      end
       it "assigns @configs" do
         expect(kmc.instance_variable_get(:@configs)).to_not be_nil
       end
@@ -15,7 +18,10 @@ RSpec.describe KarlMarxovChain do
       end
     end
     context "when configs.yml is unavailable" do
-      it "errors out usefully"
+      it "errors out usefully" do
+        allow(File).to receive(:exists?).with("configs.yml").and_return(false)
+        expect { KarlMarxovChain.new }.to raise_error(RuntimeError)
+      end
     end
   end
 
