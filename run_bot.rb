@@ -3,8 +3,7 @@ require_relative 'KarlMarxovChain'
 tweet = KarlMarxovChain.new
 if ARGV[0] == "random" # Called from the command line to make a random sentence.
   tweet_text = tweet.random_sentence
-  # tweet.tweet(tweet_text)
-  puts tweet_text
+  tweet.tweet(tweet_text)
 elsif ARGV[0] == "term" # Called from the command line to seed a sentence.
   tweet.triple_array
   tweet.tweet(tweet.build_sentence(ARGV[1]))
