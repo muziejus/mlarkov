@@ -5,7 +5,7 @@ require 'yaml'
 class KarlMarxovChain
 
   def initialize
-    @configs = YAML::load_file('configs.yml')
+    set_configs
     @since_id = @configs[:since_id].to_i
   end
 
@@ -86,6 +86,14 @@ class KarlMarxovChain
   def get_replies
     @since_id == 0 ? reply_opts = {} : reply_opts = { since_id: @since_id }
     @client.mentions(reply_opts)
+  end
+
+  def set_configs
+    if File.exists? 'configs.yml'
+      @configs = YAML::load_file 'configs.yml'
+    else
+      raise "No configs file"
+    end
   end
 end
 
