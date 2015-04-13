@@ -27,5 +27,5 @@ After the KarlMarxovChain class definition, you can see the commands I use to sp
 Finally, I summon this via a cron command that looks like this:
 
 ```
-*/2 * * * * cd $BOT_HOME/karlmarxovchain ; /complex/rvm/path/to/ruby KarlMarxovChain.rb >> cron.log 2>&1 
+*/2 * * * * cd $BOT_HOME/karlmarxovchain ; /complex/rvm/path/to/ruby run_bot.rb >> cron.log 2>&1 
 ```
