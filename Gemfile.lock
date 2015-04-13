@@ -3,6 +3,7 @@ GEM
   specs:
     addressable (2.3.8)
     buftok (0.2.0)
+    diff-lcs (1.2.5)
     equalizer (0.0.11)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
@@ -17,7 +18,19 @@ GEM
     msgpack (0.5.11)
     multipart-post (2.0.0)
     naught (1.0.0)
-    oauth (0.4.7)
+    rspec (3.2.0)
+      rspec-core (~> 3.2.0)
+      rspec-expectations (~> 3.2.0)
+      rspec-mocks (~> 3.2.0)
+    rspec-core (3.2.3)
+      rspec-support (~> 3.2.0)
+    rspec-expectations (3.2.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.2.0)
+    rspec-mocks (3.2.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.2.0)
+    rspec-support (3.2.2)
     simple_oauth (0.3.1)
     thread_safe (0.3.5)
     twitter (5.14.0)
@@ -37,5 +50,5 @@ PLATFORMS
 
 DEPENDENCIES
   marky_markov
-  oauth
+  rspec
   twitter
