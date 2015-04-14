@@ -10,7 +10,8 @@ class KarlMarxovChain
   end
 
   def random_sentence # creates a random sentence of under 140 characters using marky_markov
-    sentence = MarkyMarkov::Dictionary.new(['capital', 'earlywork'].sample).generate_n_sentences 1
+    @dictionary ||= set_dictionary
+    sentence = @dictionary.generate_n_sentences 1
     if sentence.length < 140
       sentence.capitalize
     else
@@ -93,6 +94,15 @@ class KarlMarxovChain
       @configs = YAML::load_file 'configs.yml'
     else
       raise "No configs file"
+    end
+  end
+
+  def set_dictionary
+    dictionary = ['capital', 'earlywork'].sample
+    if File.exists? "#{dictionary}.mmd"
+      MarkyMarkov::Dictionary.new("#{dictionary}")
+    else
+      raise "Can't find dictionary #{dictionary}.mmd"
     end
   end
 end

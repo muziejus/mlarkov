@@ -33,13 +33,20 @@ RSpec.describe KarlMarxovChain do
 
   describe '#random_sentence' do
     context "when dictionaries are available" do
+      it "assigns @dictionary" do
+        kmc.random_sentence
+        expect(kmc.instance_variable_get(:@dictionary)).to_not be_nil
+      end
       it "creates a random sentence"
       it "that is no more than 140 characters long"
       it "creates a sentence that is capitalized"
     end
 
     context "when dictionaries are not available" do
-      it "errors out usefully"
+      it "errors out usefully" do
+        allow(File).to receive(:exists?).with("capital.mmd").and_return(false)
+        expect { kmc.random_sentence }.to raise_error
+      end
     end
     
   end
