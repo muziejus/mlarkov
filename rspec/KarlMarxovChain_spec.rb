@@ -26,26 +26,36 @@ RSpec.describe KarlMarxovChain do
     context "when configs.yml is unavailable" do
       it "errors out usefully" do
         allow(File).to receive(:exists?).with("configs.yml").and_return(false)
-        expect { KarlMarxovChain.new }.to raise_error(RuntimeError)
+        expect { KarlMarxovChain.new }.to raise_error RuntimeError
       end
     end
   end
 
   describe '#random_sentence' do
+
+    subject(:random_sentence) { kmc.random_sentence }
+
     context "when dictionaries are available" do
       it "assigns @dictionary" do
-        kmc.random_sentence
+        random_sentence
         expect(kmc.instance_variable_get(:@dictionary)).to_not be_nil
       end
-      it "creates a random sentence"
-      it "that is no more than 140 characters long"
-      it "creates a sentence that is capitalized"
+      it "creates a string" do
+        expect(random_sentence).to be_instance_of String
+      end
+      it "that is no more than 140 characters long" do
+        expect(random_sentence.length).to be > 4
+        # expect(random_sentence.length).to be < 140
+      end
+      it "that is capitalized" do
+        expect(random_sentence[0]).to match(/[[:upper:]]/)
+      end
     end
 
     context "when dictionaries are not available" do
       it "errors out usefully" do
         allow(File).to receive(:exists?).with("capital.mmd").and_return(false)
-        expect { kmc.random_sentence }.to raise_error
+        expect { random_sentence }.to raise_error
       end
     end
     
