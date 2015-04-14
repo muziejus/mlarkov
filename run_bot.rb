@@ -19,6 +19,7 @@ else # must a cron job, looking for @s.
     tweet_text = "@" + reply.user.screen_name + " " + tweet_text
     tweet.tweet(tweet_text, reply.id)
   end
+  # Run this after everything instead and get a better way of getting the most recent since_id
   tweet.update_since_id(reply_ids.max) unless reply_ids.max.nil?
 end
 
