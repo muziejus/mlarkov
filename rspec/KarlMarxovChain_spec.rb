@@ -64,7 +64,7 @@ RSpec.describe KarlMarxovChain do
   end
 
   describe "#set_triple_array" do
-    it "assigns @tripe_array" do
+    it "assigns @triple_array" do
       kmc.set_triple_array
       expect(kmc.instance_variable_get(:@triple_array)).to_not be_nil
     end
@@ -72,6 +72,12 @@ RSpec.describe KarlMarxovChain do
     it "which is an array" do
       kmc.set_triple_array
       expect(kmc.instance_variable_get(:@triple_array)).to be_an_instance_of Array
+    end
+    context "when dictionaries are not available" do
+      it "errors out usefully" do
+        allow(File).to receive(:exists?).with("capital.txt").and_return(false)
+        expect { kmc.set_triple_array }.to raise_error
+      end
     end
 
   end

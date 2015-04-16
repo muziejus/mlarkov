@@ -20,7 +20,7 @@ class KarlMarxovChain
   end
 
   def set_triple_array # creates @triple_array
-    textarray = File.read("#{["capital", "earlywork"].sample}.txt").split(" ")
+    textarray = set_dictionary("txt").split(" ")
     @triple_array = (0..textarray.length - 2).map{ |n| "#{textarray[n]} #{textarray[n + 1]} #{textarray[n + 2]}" }
   end
 
@@ -76,7 +76,7 @@ class KarlMarxovChain
 
   private 
   def start_client
-    @client = Twitter::REST::Client.new do |config|
+    @client ||= Twitter::REST::Client.new do |config|
       config.consumer_key = @configs[:consumer_key]
       config.consumer_secret = @configs[:consumer_secret]
       config.access_token = @configs[:access_token]
@@ -97,12 +97,16 @@ class KarlMarxovChain
     end
   end
 
-  def set_dictionary
+  def set_dictionary(extension = "mmd")
     dictionary = ['capital', 'earlywork'].sample
-    if File.exists? "#{dictionary}.mmd"
-      MarkyMarkov::Dictionary.new("#{dictionary}")
+    if File.exists? "#{dictionary}.#{extension}"
+      if extension == "txt"
+        File.read("#{dictionary}.txt")
+      else
+        MarkyMarkov::Dictionary.new("#{dictionary}")
+      end
     else
-      raise "Can't find dictionary #{dictionary}.mmd"
+      raise "Can't find dictionary #{dictionary}.#{extension}"
     end
   end
 end
