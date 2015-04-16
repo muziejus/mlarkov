@@ -40,13 +40,16 @@ RSpec.describe KarlMarxovChain do
         random_sentence
         expect(kmc.instance_variable_get(:@dictionary)).to_not be_nil
       end
+
       it "creates a string" do
         expect(random_sentence).to be_instance_of String
       end
+
       it "that is no more than 140 characters long" do
         expect(random_sentence.length).to be > 4
         # expect(random_sentence.length).to be < 140
       end
+
       it "that is capitalized" do
         expect(random_sentence[0]).to match(/[[:upper:]]/)
       end
@@ -58,7 +61,26 @@ RSpec.describe KarlMarxovChain do
         expect { random_sentence }.to raise_error
       end
     end
-    
   end
+
+  describe "#set_triple_array" do
+    it "assigns @tripe_array" do
+      kmc.set_triple_array
+      expect(kmc.instance_variable_get(:@triple_array)).to_not be_nil
+    end
+
+    it "which is an array" do
+      kmc.set_triple_array
+      expect(kmc.instance_variable_get(:@triple_array)).to be_an_instance_of Array
+    end
+
+  end
+
+  describe "#build_sentence"
+  describe "#add_to_sentence"
+  describe "#find_hits"
+  describe "#replies"
+  describe "#update_since_id"
+  describe "#tweet"
 
 end
