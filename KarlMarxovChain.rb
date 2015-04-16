@@ -19,7 +19,7 @@ class KarlMarxovChain
     end
   end
 
-  def triple_array # creates @triple_array
+  def set_triple_array # creates @triple_array
     textarray = File.read("#{["capital", "earlywork"].sample}.txt").split(" ")
     @triple_array = (0..textarray.length - 2).map{ |n| "#{textarray[n]} #{textarray[n + 1]} #{textarray[n + 2]}" }
   end
