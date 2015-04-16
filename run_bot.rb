@@ -5,10 +5,10 @@ if ARGV[0] == "random" # Called from the command line to make a random sentence.
   tweet_text = tweet.random_sentence
   tweet.tweet(tweet_text)
 elsif ARGV[0] == "term" # Called from the command line to seed a sentence.
-  tweet.triple_array
+  tweet.set_triple_array
   tweet.tweet(tweet.build_sentence(ARGV[1]))
 else # must a cron job, looking for @s.
-  tweet.triple_array
+  tweet.set_triple_array
   reply_ids = []
   tweet.replies.each do |reply|
     reply_ids.push(reply.id)
