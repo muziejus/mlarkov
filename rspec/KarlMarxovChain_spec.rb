@@ -51,7 +51,11 @@ RSpec.describe KarlMarxovChain do
       end
 
       it "that is capitalized" do
-        expect(random_sentence[0]).to match(/[[:upper:]]/)
+        if random_sentence[0] =~ /\w/
+          expect(random_sentence[0]).to match(/[[:upper:]]/)
+        else
+          true # Assuming it's a “ or some such.
+        end
       end
     end
 
@@ -84,7 +88,6 @@ RSpec.describe KarlMarxovChain do
 
   describe "#build_sentence"
   describe "#add_to_sentence"
-  describe "#find_hits"
   describe "#replies"
   describe "#update_since_id"
   describe "#tweet"
