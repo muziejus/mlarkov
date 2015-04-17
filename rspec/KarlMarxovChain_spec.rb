@@ -86,7 +86,26 @@ RSpec.describe KarlMarxovChain do
 
   end
 
-  describe "#build_sentence"
+  describe "#build_sentence" do
+    context "when the term exists" do
+      subject(:build_sentence) { kmc.build_sentence "England" }
+
+      it "builds a sentence that is no more than 120 characters" do
+        expect(build_sentence.length).to be < 120
+      end
+      it "that begins with the term provided" do
+        expect(build_sentence).to match(/^.{0,1}England/)
+      end
+    end
+
+    context "when the term does not exist" do
+      it "produces a useful warning sentence" do
+        expect(kmc.build_sentence("Zygmorf")).to eq "Your term (Zygmorf) produced nothing, unlike an exploited worker."
+      end
+    end
+
+  end
+
   describe "#add_to_sentence"
   describe "#replies"
   describe "#update_since_id"
