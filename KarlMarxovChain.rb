@@ -53,9 +53,6 @@ class KarlMarxovChain
     end
   end
 
-  def find_hits(term)
-    @triple_array.select{ |n| n =~ /^#{term}/ }
-  end
 
   def replies
     start_client
@@ -82,6 +79,10 @@ class KarlMarxovChain
       config.access_token = @configs[:access_token]
       config.access_token_secret = @configs[:access_token_secret]
     end
+  end
+
+  def find_hits(term)
+    @triple_array.select{ |n| n =~ /^#{term}/ }
   end
 
   def get_replies
