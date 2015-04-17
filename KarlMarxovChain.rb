@@ -34,26 +34,6 @@ class KarlMarxovChain
     end
   end
 
-  def add_to_sentence(sentence)
-    if /[.!?]/.match(sentence[-1]).nil? # not the end of a sentence
-      if sentence.length > 120 # we're long enough
-        sentence[0...119].gsub(/ \S*$/, "")
-      else
-        term = /\S* \S*$/.match sentence
-        hits = find_hits(term)
-        if hits.empty? # no more chain building
-          sentence 
-        else
-          sentence = sentence + " " + /\S*$/.match(hits.sample).to_s
-          self.add_to_sentence(sentence)
-        end
-      end
-    else 
-      sentence
-    end
-  end
-
-
   def replies
     start_client
     @replies ||= get_replies
@@ -83,6 +63,25 @@ class KarlMarxovChain
 
   def find_hits(term)
     @triple_array.select{ |n| n =~ /^#{term}/ }
+  end
+
+  def add_to_sentence(sentence)
+    if /[.!?]/.match(sentence[-1]).nil? # not the end of a sentence
+      if sentence.length > 120 # we're long enough
+        sentence[0...119].gsub(/ \S*$/, "")
+      else
+        term = /\S* \S*$/.match sentence
+        hits = find_hits(term)
+        if hits.empty? # no more chain building
+          sentence 
+        else
+          sentence = sentence + " " + /\S*$/.match(hits.sample).to_s
+          self.add_to_sentence(sentence)
+        end
+      end
+    else 
+      sentence
+    end
   end
 
   def get_replies
