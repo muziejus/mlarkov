@@ -25,6 +25,7 @@ class KarlMarxovChain
   end
 
   def build_sentence(term)
+    @triple_array ||= set_triple_array
     hits = find_hits(term)
     if hits.empty?
       "Your term (#{term}) produced nothing, unlike an exploited worker." # could run long and crash.
@@ -76,7 +77,7 @@ class KarlMarxovChain
           sentence 
         else
           sentence = sentence + " " + /\S*$/.match(hits.sample).to_s
-          self.add_to_sentence(sentence)
+          add_to_sentence(sentence)
         end
       end
     else 
