@@ -1,6 +1,6 @@
-require_relative 'KarlMarxovChain'
+require_relative 'mlarkov'
 
-tweet = KarlMarxovChain.new
+tweet = Mlarkov.new
 if ARGV[0] == "random" # Called from the command line to make a random sentence.
   tweet_text = tweet.random_sentence
   tweet.tweet(tweet_text)
@@ -13,7 +13,7 @@ else # must a cron job, looking for @s.
   tweet.replies.each do |reply|
     reply_ids.push(reply.id)
     # puts "reply: #{reply.id} - #{reply.text}"
-    match = /^.*@KarlMarxovChain:* (\w*).*$/i.match(reply.text)
+    match = /^.*@MLArkov:* (\w*).*$/i.match(reply.text)
     match.nil? ? term = "No term detected" : term = match[1]
     tweet_text = tweet.build_sentence(term)
     tweet_text = "@" + reply.user.screen_name + " " + tweet_text

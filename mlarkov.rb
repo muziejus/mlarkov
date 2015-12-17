@@ -2,7 +2,7 @@ require 'twitter'
 require 'marky_markov'
 require 'yaml'
 
-class KarlMarxovChain
+class Mlarkov
 
   def initialize
     set_configs
