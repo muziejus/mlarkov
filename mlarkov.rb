@@ -52,7 +52,7 @@ class Mlarkov
     @client.update(text, {in_reply_to_status_id: reply_id})
   end
 
-  private 
+  # private 
   def start_client
     @client ||= Twitter::REST::Client.new do |config|
       config.consumer_key = @configs[:consumer_key]
@@ -99,16 +99,15 @@ class Mlarkov
   end
 
   def set_dictionary(extension = "mmd")
-    dictionary = ['capital', 'earlywork'].sample
-    if File.exists? "#{dictionary}.#{extension}"
-      if extension == "txt"
-        File.read("#{dictionary}.txt")
-      else
-        MarkyMarkov::Dictionary.new("#{dictionary}")
-      end
-    else
-      raise "Can't find dictionary #{dictionary}.#{extension}"
-    end
+    start_client
+    search = @client.search("#mla16", count: "100")
+    tweet_array = search.map{ |tweet| tweet.text }
+    puts "Found #{tweet_array.length} tweets."
+    tweet_array = tweet_array.join(" ")
+    tweets = tweet_array.gsub(/@/, "").gsub(/https:\S+/, "").gsub(/#mla16/i, "").gsub(/\s+/, " ")
+    dictionary = MarkyMarkov::TemporaryDictionary.new
+    dictionary.parse_string tweets
+    dictionary
   end
 end
 
