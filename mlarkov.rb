@@ -49,7 +49,7 @@ class Mlarkov
 
   def tweet(text, reply_id = nil)
     start_client
-    @client.update(text, {in_reply_to_status_id: reply_id})
+    @client.update(text + " #MLA16", {in_reply_to_status_id: reply_id})
   end
 
   # private 
@@ -101,7 +101,7 @@ class Mlarkov
   def set_dictionary(extension = "mmd")
     start_client
     search = @client.search("#mla16", count: "100")
-    tweet_array = search.map{ |tweet| tweet.text }
+    tweet_array = search.map{ |tweet| tweet.text unless tweet.user.screen_name == "MLArkov" }
     puts "Found #{tweet_array.length} tweets."
     tweet_array = tweet_array.join(" ")
     tweets = tweet_array.gsub(/@/, "").gsub(/https:\S+/, "").gsub(/#mla16/i, "").gsub(/\s+/, " ")
