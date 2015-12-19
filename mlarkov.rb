@@ -11,27 +11,16 @@ class Mlarkov
 
   def random_sentence # creates a random sentence of under 140 characters using marky_markov
     @dictionary ||= set_dictionary
-    sentence = @dictionary.generate_n_sentences 1
-    if sentence.length < 140
-      sentence.capitalize
+    if @dictionary == "error TooManyRequests"
+      "The rate limit is exceeded. Try again later."
+    elsif @dictionary == "error other"
+      "Some error came up when talking to Twitter. Try again later."
     else
-      self.random_sentence
-    end
-  end
-
-  def set_triple_array # creates @triple_array
-    textarray = set_dictionary("txt").split(" ")
-    @triple_array = (0..textarray.length - 2).map{ |n| "#{textarray[n]} #{textarray[n + 1]} #{textarray[n + 2]}" }
-  end
-
-  def build_sentence(term)
-    @triple_array ||= set_triple_array
-    hits = find_hits(term)
-    if hits.empty?
-      "Your term (#{term}) produced nothing, unlike an exploited worker." # could run long and crash.
-    else
-      sample = hits.sample
-      add_to_sentence(sample)
+      sentence = @dictionary.generate_n_words(100).capitalize.gsub("&amp;", "&").gsub(/$/, ".")
+      unless sentence.length < 120
+        sentence = sentence[0...119].gsub(/ \S*$/, ".")
+      end
+      sentence
     end
   end
 
@@ -62,29 +51,6 @@ class Mlarkov
     end
   end
 
-  def find_hits(term)
-    @triple_array.select{ |n| n =~ /^#{term}/ }
-  end
-
-  def add_to_sentence(sentence)
-    if /[.!?]/.match(sentence[-1]).nil? # not the end of a sentence
-      if sentence.length > 120 # we're long enough
-        sentence[0...119].gsub(/ \S*$/, "")
-      else
-        term = /\S* \S*$/.match sentence
-        hits = find_hits(term)
-        if hits.empty? # no more chain building
-          sentence 
-        else
-          sentence = sentence + " " + /\S*$/.match(hits.sample).to_s
-          add_to_sentence(sentence)
-        end
-      end
-    else 
-      sentence
-    end
-  end
-
   def get_replies
     @since_id == 0 ? reply_opts = {} : reply_opts = { since_id: @since_id }
     @client.mentions(reply_opts)
@@ -100,14 +66,20 @@ class Mlarkov
 
   def set_dictionary(extension = "mmd")
     start_client
-    search = @client.search("#mla16", count: "100")
-    tweet_array = search.map{ |tweet| tweet.text unless tweet.user.screen_name == "MLArkov" }
-    puts "Found #{tweet_array.length} tweets."
-    tweet_array = tweet_array.join(" ")
-    tweets = tweet_array.gsub(/@/, "").gsub(/https:\S+/, "").gsub(/#mla16/i, "").gsub(/\s+/, " ")
-    dictionary = MarkyMarkov::TemporaryDictionary.new
-    dictionary.parse_string tweets
-    dictionary
+    begin
+      search = @client.search("#mla16", count: "100")
+      tweet_array = search.map{ |tweet| tweet.text unless tweet.user.screen_name == "MLArkov" }
+      puts "Found #{tweet_array.length} tweets."
+      tweet_array = tweet_array.join(" ")
+      tweets = tweet_array.gsub(/@/, "").gsub(/https:\S+/, "").gsub(/#mla16/i, "").gsub(/\s+/, " ")
+      dictionary = MarkyMarkov::TemporaryDictionary.new
+      dictionary.parse_string tweets
+      dictionary
+    rescue Twitter::Error::TooManyRequests
+      "error TooManyRequests"
+    rescue 
+      "error other"
+    end
   end
 end
 
