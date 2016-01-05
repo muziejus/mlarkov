@@ -16,7 +16,7 @@ class Mlarkov
     elsif @dictionary == "error other"
       "Some error came up when talking to Twitter. Try again later."
     else
-      sentence = @dictionary.generate_n_words(100).capitalize.gsub("&amp;", "&").gsub(/$/, ".")
+      sentence = @dictionary.generate_n_words(100).gsub("&amp;", "&").gsub(/$/, ".")
       unless sentence.length < 120
         sentence = sentence[0...119].gsub(/ \S*$/, ".")
       end
