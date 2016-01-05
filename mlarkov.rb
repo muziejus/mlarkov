@@ -67,7 +67,7 @@ class Mlarkov
   def set_dictionary(extension = "mmd")
     start_client
     begin
-      search = @client.search("#mla16", count: "100")
+      search = @client.search("#mla16 -rt", count: "100")
       tweet_array = search.map{ |tweet| tweet.text unless tweet.user.screen_name == "MLArkov" }
       puts "Found #{tweet_array.length} tweets."
       tweet_array = tweet_array.join(" ")
